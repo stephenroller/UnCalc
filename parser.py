@@ -3,6 +3,8 @@ import ply.yacc as yacc
 from tokens import tokens
 from units import convert_many
 
+DECIMALS_OUT = 5
+
 precedence = (
     ('left', 'IN'),
     ('left', 'PLUS', 'MINUS'),
@@ -12,8 +14,8 @@ precedence = (
 )
 
 class UnitValue(object):
-    def __init__(self, value=None, numer=None, denom=None):
-        self.value = value or 1
+    def __init__(self, value=1, numer=None, denom=None):
+        self.value = value
         self.numer = numer or []
         self.denom = denom or []
     
@@ -31,8 +33,12 @@ class UnitValue(object):
     
     def __repr__(self):
         out = ""
-        if self.value != 1:
-            out += "%.3f" % self.value
+        value = round(self.value, DECIMALS_OUT)
+        if value == int(value):
+            out += str(int(self.value))
+        else:
+            out += ("%." + str(DECIMALS_OUT) + "f") % self.value
+            
         if self.numer:
             if out:
                 out += " "
@@ -60,12 +66,12 @@ class UnitValue(object):
                              denom=self.numer * -x)
     
     def __add__(self, other):
-        return UnitValue(self.value + other.convert_to(self).value,
-                         self.numer,
-                         self.denom)
+        return UnitValue(value=self.value + other.convert_to(self).value,
+                         numer=self.numer,
+                         denom=self.denom)
     
     def __sub__(self, other):
-        return self + - other
+        return self + (- other)
     
     def convert_to(self, goal):
         value = self.value
@@ -156,6 +162,3 @@ def p_error(p):
 def parse(string):
     parser = yacc.yacc()
     return parser.parse(string)
-
-if __name__ == '__main__':
-    print parse("9.8 m / s + 10 miles / hours in ft / week")

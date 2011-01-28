@@ -26,6 +26,8 @@ useful tool.
   * UnCalc cannot handle compound units, such as Newtons or mph.
   * UnCalc has no trigonometry functions, e.g. cos, sin..
   * UnCalc will die ungracefully if given an invalid conversion.
+  * Uncalc is unaware of plurality, e.g. 1 days and 3 day are both valid 
+    outputs.
 
 ## Dependencies
 
