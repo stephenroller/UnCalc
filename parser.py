@@ -111,7 +111,7 @@ def p_expr_binop(p):
         p[0] = p[1] - p[3]
     elif op == '*':
         p[0] = p[1] * p[3]
-    elif op == '/':
+    elif op == '/' or op == 'per':
         p[0] = p[1] / p[3]
     elif op == '^':
         p[0] = p[1] ** p[3]
