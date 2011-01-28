@@ -47,6 +47,29 @@ for measurement, conversions in units:
 def convert_one(from_unit, to_unit):
     assert unit_types[from_unit] == unit_types[to_unit]
 
+def convert_many(from_units, to_units):
+    assert len(from_units) == len(to_units)
+    # copies so we can mess with them freely
+    from_units = list(from_units)
+    to_units = list(to_units)
+    
+    value = 1.0
+    
+    while from_units:
+        from_unit = from_units.pop(0)
+        unit_type = unit_types[from_unit]
+        possible_goals = [unit2 for unit2 in to_units if unit_types[unit2] == unit_type]
+        assert possible_goals, "Invalid conversion."
+        to_unit = possible_goals[0]
+        to_units.remove(to_unit)
+        mult, path = unit_graphs[unit_type].path(from_unit, to_unit)
+        value *= mult
+    
+    assert not to_units, "Invalid conversion."
+    
+    return value
+    
+
 def make_unit_re():
     unit_list = []
     for measurement, conversions in units:

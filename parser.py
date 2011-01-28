@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import ply.yacc as yacc
 from tokens import tokens
+from units import convert_many
 
 precedence = (
     ('left', 'IN'),
@@ -33,11 +34,41 @@ class UnitValue(object):
         if self.value != 1:
             out += "%.3f" % self.value
         if self.numer:
-            out += "(" + "*".join(self.numer) + ")"
+            if out:
+                out += " "
+            out += "*".join(self.numer)
         if self.denom:
-            out += "/(" + "*".join(self.denom) + ")"
+            out += "/" + "*".join(self.denom)
         
         return out
+    
+    def __neg__(self):
+        return UnitValue(value=-self.value,
+                         numer=self.numer,
+                         denom=self.denom)
+    
+    def __pow__(self, x):
+        assert not x.numer and not x.denom
+        x = x.value
+        if x >= 0:
+            return UnitValue(value=self.value ** x, 
+                             numer=self.numer * x,
+                             denom=self.denom * x)
+        else:
+            return UnitValue(value=self.value ** x,
+                             numer=self.denom * -x,
+                             denom=self.numer * -x)
+    
+    def convert_to(self, goal):
+        assert goal.value == 1
+        value = self.value
+        value *= convert_many(self.numer, goal.numer)
+        value /= convert_many(self.denom, goal.denom)
+        
+        return UnitValue(value=value,
+                         numer=goal.numer,
+                         denom=goal.denom)
+        
 
 def p_eval_expr(p):
     '''eval-expr : conversion
@@ -48,11 +79,11 @@ def p_eval_expr(p):
 def p_conversion(p):
     '''conversion : unit-expr IN unit-expr %prec IN
     '''
-    p[0] = ['CONVERT', p[1], p[3]]
+    p[0] = p[1].convert_to(p[3])
 
 def p_expr_unary(p):
     '''unit-expr : MINUS unit-expr          %prec UMINUS'''
-    p[0] = [p[1], p[2]]
+    p[0] = - p[2]
 
 def p_expr_paren(p):
     '''unit-expr : LPAR unit-expr RPAR
@@ -64,7 +95,7 @@ def p_expr_binop(p):
                  | unit-expr MINUS unit-expr      %prec MINUS
                  | unit-expr TIMES unit-expr      %prec TIMES
                  | unit-expr DIVIDE unit-expr     %prec DIVIDE
-                 | unit-expr EXP expr             %prec EXP
+                 | unit-expr EXP unit-expr        %prec EXP
     '''
     op = p[2]
     if op == '+':
@@ -120,4 +151,4 @@ def parse(string):
     return parser.parse(string)
 
 if __name__ == '__main__':
-    print parse("9.8 ft / s / 10 s in mi / h")
+    print parse("9.8 s ^ -1")
