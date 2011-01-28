@@ -2,10 +2,12 @@
 
 from graph import Graph
 
-# METRIC_PREFIXES = r"(k(ilo)?|c(enti)?|m(illi)?)?"
-
 units = [
     ('distance', [
+        # multiplier    from   [to and aliases]
+        # e.g. 1 m = 6.213e-4 miles
+        #      1 m = 39.370 inches, etc
+        
         (6.21371192e-4, 'm',   ['mi', 'mile', 'miles']),
         (1.0,           'm',   ['m', 'meter', 'meters']),
         (39.3700787,    'm',   ['inch', 'inches']),
