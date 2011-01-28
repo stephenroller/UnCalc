@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from graph import Graph
+
 # METRIC_PREFIXES = r"(k(ilo)?|c(enti)?|m(illi)?)?"
 
 units = [
@@ -19,9 +21,35 @@ units = [
     ]),
 ]
 
+_add = lambda x,y: x+y
+
+# create the measurements dictionary
+unit_types = dict(
+    (name, measurement)
+    for measurement, conversions in units
+    for multiplier, base, names in conversions
+    for name in names
+)
+
+unit_graphs = dict()
+
+for measurement, conversions in units:
+    vertices = []
+    edges = []
+    for multiplier, base, names in conversions:
+        vertices += names
+        edges.append((base, names[0], multiplier))
+        for name in names[1:]:
+            edges.append((names[0], name, 1))
+    
+    unit_graphs[measurement] = Graph(vertices, edges)
+
+def convert_one(from_unit, to_unit):
+    assert unit_types[from_unit] == unit_types[to_unit]
+
 def make_unit_re():
     unit_list = []
-    for distance, conversions in units:
+    for measurement, conversions in units:
         for multiplier, base, names in conversions:
             unit_list += names
     
