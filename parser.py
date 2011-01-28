@@ -158,4 +158,4 @@ def parse(string):
     return parser.parse(string)
 
 if __name__ == '__main__':
-    print parse("9.8 m s - 10 mile hours in ft week")
+    print parse("9.8 m / s + 10 miles / hours in ft / week")
