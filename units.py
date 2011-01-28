@@ -48,7 +48,7 @@ def convert_one(from_unit, to_unit):
     assert unit_types[from_unit] == unit_types[to_unit]
 
 def convert_many(from_units, to_units):
-    assert len(from_units) == len(to_units)
+    assert len(from_units) == len(to_units), "Invalid conversion."
     # copies so we can mess with them freely
     from_units = list(from_units)
     to_units = list(to_units)
@@ -76,4 +76,5 @@ def make_unit_re():
         for multiplier, base, names in conversions:
             unit_list += names
     
+    unit_list.sort(key=len, reverse=True)
     return "(%s)" % ')|('.join(unit_list)

@@ -59,8 +59,15 @@ class UnitValue(object):
                              numer=self.denom * -x,
                              denom=self.numer * -x)
     
+    def __add__(self, other):
+        return UnitValue(self.value + other.convert_to(self).value,
+                         self.numer,
+                         self.denom)
+    
+    def __sub__(self, other):
+        return self + - other
+    
     def convert_to(self, goal):
-        assert goal.value == 1
         value = self.value
         value *= convert_many(self.numer, goal.numer)
         value /= convert_many(self.denom, goal.denom)
@@ -151,4 +158,4 @@ def parse(string):
     return parser.parse(string)
 
 if __name__ == '__main__':
-    print parse("9.8 s ^ -1")
+    print parse("9.8 m s - 10 mile hours in ft week")
