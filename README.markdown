@@ -4,19 +4,28 @@ UnCalc is a Unit Calculator, much like
 [Google Calculator](http://www.google.com/intl/en/help/features.html#calculator).
 It is written in Python.
 
+UnCalc was hacked together in a few hours as a proof-of-concept. It requires 
+substantial work before it should ever be used seriously.
+
 ## Usage
 
     $ python calculator.py '10 miles per hour in m / s'
     4.470 m/s
+    
+    $ python calculator.py '8 * 2'
+    16.000
 
 ## Current Limitations
 
-UnCalc 
+UnCalc has several large limitations keeping it from being a seriously
+useful tool.
 
   * UnCalc has a very limited list of supported units. See units.py for a 
     complete list.
-  * UnCalc does not know about any constants, like pi, e and hbar.
+  * UnCalc does not know about any constants, e.g. pi, e, hbar.
   * UnCalc cannot handle compound units, such as Newtons or mph.
+  * UnCalc has no trigonometry functions, e.g. cos, sin..
+  * UnCalc will die ungracefully if given an invalid conversion.
 
 ## Dependencies
 
