@@ -22,7 +22,7 @@ t_MINUS = r'-'
 t_PLUS = r'\+'
 t_TIMES = r'\*'
 t_DIVIDE = r'/|per'
-t_EXP = r'\^'
+t_EXP = r'\^|\*\*'
 t_UNIT = make_unit_re()
 
 def t_error(t):
