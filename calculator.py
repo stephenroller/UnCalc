@@ -2,6 +2,7 @@
 
 import sys
 from parser import parse
+from converter import eval_expr
 
 EXAMPLE = '10 miles / hour in ft / s'
 
@@ -22,10 +23,10 @@ if __name__ == '__main__':
         sys.exit(2)
     
     inpt = sys.argv[1]
-    try:
-        print parse(inpt)
-    except Exception, msg:
-        sys.stdout.write("Error: %s\n" % msg)
-        sys.exit(1)
+    # try:
+    print eval_expr(parse(inpt))
+    # except Exception, msg:
+    #     sys.stdout.write("Error: %s\n" % msg)
+    #     sys.exit(1)
 
     

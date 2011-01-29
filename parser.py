@@ -1,9 +1,18 @@
 #!/usr/bin/env python
 import ply.yacc as yacc
 from tokens import tokens
-from units import convert_many
 
-DECIMALS_OUT = 5
+class OpConstants:
+    CONVERT = 'CONVERT'
+    CONSTANT = 'CONSTANT'
+    UNIT = 'UNIT'
+    MINUS = '-'
+    PLUS = '+'
+    TIMES = '*'
+    DIVIDE = '/'
+    EXP = '^'
+    NUMBER = 'NUMBER'
+
 
 precedence = (
     ('left', 'IN'),
@@ -13,75 +22,6 @@ precedence = (
     ('right', 'UMINUS'),
 )
 
-class UnitValue(object):
-    def __init__(self, value=1, numer=None, denom=None):
-        self.value = value
-        self.numer = numer or []
-        self.denom = denom or []
-    
-    def __mul__(self, other):
-        assert isinstance(other, UnitValue)
-        return UnitValue(value=self.value * other.value,
-                         numer=self.numer + other.numer,
-                         denom=self.denom + other.denom)
-    
-    def __div__(self, other):
-        assert isinstance(other, UnitValue)
-        return UnitValue(value = self.value / other.value,
-                         numer=self.numer + other.denom,
-                         denom=self.denom + other.numer)
-    
-    def __repr__(self):
-        out = ""
-        value = round(self.value, DECIMALS_OUT)
-        if value == int(value):
-            out += str(int(self.value))
-        else:
-            out += ("%." + str(DECIMALS_OUT) + "f") % self.value
-            
-        if self.numer:
-            if out:
-                out += " "
-            out += "*".join(self.numer)
-        if self.denom:
-            out += "/" + "*".join(self.denom)
-        
-        return out
-    
-    def __neg__(self):
-        return UnitValue(value=-self.value,
-                         numer=self.numer,
-                         denom=self.denom)
-    
-    def __pow__(self, x):
-        assert not x.numer and not x.denom
-        x = x.value
-        if x >= 0:
-            return UnitValue(value=self.value ** x, 
-                             numer=self.numer * x,
-                             denom=self.denom * x)
-        else:
-            return UnitValue(value=self.value ** x,
-                             numer=self.denom * -x,
-                             denom=self.numer * -x)
-    
-    def __add__(self, other):
-        return UnitValue(value=self.value + other.convert_to(self).value,
-                         numer=self.numer,
-                         denom=self.denom)
-    
-    def __sub__(self, other):
-        return self + (- other)
-    
-    def convert_to(self, goal):
-        value = self.value
-        value *= convert_many(self.numer, goal.numer)
-        value /= convert_many(self.denom, goal.denom)
-        
-        return UnitValue(value=value,
-                         numer=goal.numer,
-                         denom=goal.denom)
-        
 
 def p_eval_expr(p):
     '''eval-expr : conversion
@@ -92,13 +32,19 @@ def p_eval_expr(p):
 def p_conversion(p):
     '''conversion : unit-expr IN unit-expr %prec IN
     '''
-    p[0] = p[1].convert_to(p[3])
+    p[0] = [OpConstants.CONVERT, p[1], p[3]]
 
 def p_expr_unary(p):
     '''unit-expr : MINUS unit-expr          %prec UMINUS'''
-    p[0] = - p[2]
+    p[0] = [OpConstants.MINUS, p[2]]
 
 def p_expr_paren(p):
+    '''expr : LPAR expr RPAR
+    '''
+    p[0] = p[2]
+
+
+def p_unit_expr_paren(p):
     '''unit-expr : LPAR unit-expr RPAR
     '''
     p[0] = p[2]
@@ -112,22 +58,22 @@ def p_expr_binop(p):
     '''
     op = p[2]
     if op == '+':
-        p[0] = p[1] + p[3]
+        p[0] = [OpConstants.PLUS, p[1], p[3]]
     elif op == '-':
-        p[0] = p[1] - p[3]
+        p[0] = [OpConstants.MINUS, p[1], p[3]]
     elif op == '*':
-        p[0] = p[1] * p[3]
+        p[0] = [OpConstants.TIMES, p[1], p[3]]
     elif op == '/' or op == 'per':
-        p[0] = p[1] / p[3]
+        p[0] = [OpConstants.DIVIDE, p[1], p[3]]
     elif op == '^' or op == '**':
-        p[0] = p[1] ** p[3]
+        p[0] = [OpConstants.EXP, p[1], p[3]]
     else:
         raise ValueError, "'%s' is not an operator." % op
 
 def p_unit_expr(p):
     '''unit-expr : expr units
     '''
-    p[0] = p[1] * p[2]
+    p[0] = [OpConstants.TIMES, p[1], p[2]]
 
 def p_unit_expr_one(p):
     '''unit-expr : units
@@ -135,32 +81,24 @@ def p_unit_expr_one(p):
     '''
     p[0] = p[1]
 
-constants = {
-    'pi': 3.14159265,
-    'e': 2.71828183,
-
-}
-
 def p_expr_constant(p):
     '''expr : CONSTANT
     '''
-    p[0] = UnitValue(value=constants[p[1]])
+    p[0] = [OpConstants.CONSTANT, p[1]]
 
 def p_expr_literal(p):
     '''expr : NUMBER
     '''
-    try:
-        p[0] = UnitValue(value=int(p[1]))
-    except ValueError:
-        p[0] = UnitValue(value=float(p[1]))
+    p[0] = [OpConstants.NUMBER, p[1]]
+    return
 
 def p_units_units(p):
     '''units : UNIT units'''
-    p[0] = UnitValue(numer=[p[1]]) * p[2]
+    p[0] = [OpConstants.TIMES, p[1], p[2]]
 
 def p_units_unit(p):
     '''units : UNIT'''
-    p[0] = UnitValue(numer=[p[1]])
+    p[0] = [OpConstants.UNIT, p[1]]
 
 def p_error(p):
     import sys
