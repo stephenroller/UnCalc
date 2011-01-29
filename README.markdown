@@ -22,12 +22,14 @@ useful tool.
 
   * UnCalc has a very limited list of supported units. See units.py for a 
     complete list.
-  * UnCalc does not know about any constants, e.g. pi, e, hbar.
+  * UnCalc does not know about any constants with units, such as [hbar][hbar].
   * UnCalc cannot handle compound units, such as Newtons or mph.
   * UnCalc has no trigonometry functions, e.g. cos, sin..
   * UnCalc will die ungracefully if given an invalid conversion.
-  * Uncalc is unaware of plurality, e.g. 1 days and 3 day are both valid 
+  * UnCalc is unaware of plurality, e.g. 1 days and 3 day are both valid 
     outputs.
+
+[hbar]: http://en.wikipedia.org/wiki/Planck_constant "Planck constant"
 
 ## Dependencies
 
