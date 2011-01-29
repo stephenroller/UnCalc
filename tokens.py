@@ -4,6 +4,7 @@ from units import make_unit_re
 
 tokens = (
     'IN',
+    'CONSTANT',
     'NUMBER',
     'LPAR', 'RPAR',
     'MINUS', 'PLUS',
@@ -13,6 +14,8 @@ tokens = (
 )
 
 t_ignore = ' \n\t'
+
+t_CONSTANT = '(pi|e)'
 
 t_IN = r'in'
 t_NUMBER = r"\d+(\.\d*)?(e([+-]?\d+))?"

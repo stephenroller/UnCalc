@@ -135,6 +135,17 @@ def p_unit_expr_one(p):
     '''
     p[0] = p[1]
 
+constants = {
+    'pi': 3.14159265,
+    'e': 2.71828183,
+
+}
+
+def p_expr_constant(p):
+    '''expr : CONSTANT
+    '''
+    p[0] = UnitValue(value=constants[p[1]])
+
 def p_expr_literal(p):
     '''expr : NUMBER
     '''

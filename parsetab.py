@@ -5,9 +5,9 @@ _tabversion = '3.2'
 
 _lr_method = 'LALR'
 
-_lr_signature = '\xf2\xcf\xb8f\x9cl\x92\x10\xf8\x84\xfe\xeb6\xcf\x84\xde'
+_lr_signature = '\x16\x9d\x06\xa5\xb2un)\xa8k\x94~\x16F\xb2\x8d'
     
-_lr_action_items = {'LPAR':([0,1,8,12,13,14,15,16,17,],[1,1,1,1,1,1,1,1,1,]),'DIVIDE':([3,4,6,7,9,10,11,18,19,20,21,22,23,24,25,26,],[-13,-14,12,-12,-16,12,-11,-4,-15,-5,-9,-8,12,-10,12,12,]),'NUMBER':([0,1,8,12,13,14,15,16,17,],[4,4,4,4,4,4,4,4,4,]),'TIMES':([3,4,6,7,9,10,11,18,19,20,21,22,23,24,25,26,],[-13,-14,13,-12,-16,13,-11,-4,-15,-5,-9,-8,13,-10,13,13,]),'PLUS':([3,4,6,7,9,10,11,18,19,20,21,22,23,24,25,26,],[-13,-14,14,-12,-16,14,-11,-4,-15,-5,-9,-8,-6,-10,14,-7,]),'EXP':([3,4,6,7,9,10,11,18,19,20,21,22,23,24,25,26,],[-13,-14,15,-12,-16,15,-11,-4,-15,-5,15,15,15,-10,15,15,]),'IN':([3,4,6,7,9,11,18,19,20,21,22,23,24,26,],[-13,-14,16,-12,-16,-11,-4,-15,-5,-9,-8,-6,-10,-7,]),'RPAR':([3,4,7,9,10,11,18,19,20,21,22,23,24,26,],[-13,-14,-12,-16,20,-11,-4,-15,-5,-9,-8,-6,-10,-7,]),'MINUS':([0,1,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,],[8,8,-13,-14,17,-12,8,-16,17,-11,8,8,8,8,8,8,-4,-15,-5,-9,-8,-6,-10,17,-7,]),'UNIT':([0,1,3,4,8,9,12,13,14,15,16,17,],[9,9,9,-14,9,9,9,9,9,9,9,9,]),'$end':([2,3,4,5,6,7,9,11,18,19,20,21,22,23,24,25,26,],[-1,-13,-14,0,-2,-12,-16,-11,-4,-15,-5,-9,-8,-6,-10,-3,-7,]),}
+_lr_action_items = {'LPAR':([0,1,9,13,14,15,16,17,18,],[1,1,1,1,1,1,1,1,1,]),'CONSTANT':([0,1,9,13,14,15,16,17,18,],[3,3,3,3,3,3,3,3,3,]),'DIVIDE':([3,4,5,7,8,10,11,12,19,20,21,22,23,24,25,26,27,],[-14,-13,-15,13,-12,-17,13,-11,-4,-16,-5,-9,-8,13,-10,13,13,]),'NUMBER':([0,1,9,13,14,15,16,17,18,],[5,5,5,5,5,5,5,5,5,]),'TIMES':([3,4,5,7,8,10,11,12,19,20,21,22,23,24,25,26,27,],[-14,-13,-15,14,-12,-17,14,-11,-4,-16,-5,-9,-8,14,-10,14,14,]),'PLUS':([3,4,5,7,8,10,11,12,19,20,21,22,23,24,25,26,27,],[-14,-13,-15,15,-12,-17,15,-11,-4,-16,-5,-9,-8,-6,-10,15,-7,]),'EXP':([3,4,5,7,8,10,11,12,19,20,21,22,23,24,25,26,27,],[-14,-13,-15,16,-12,-17,16,-11,-4,-16,-5,16,16,16,-10,16,16,]),'IN':([3,4,5,7,8,10,12,19,20,21,22,23,24,25,27,],[-14,-13,-15,17,-12,-17,-11,-4,-16,-5,-9,-8,-6,-10,-7,]),'RPAR':([3,4,5,8,10,11,12,19,20,21,22,23,24,25,27,],[-14,-13,-15,-12,-17,21,-11,-4,-16,-5,-9,-8,-6,-10,-7,]),'MINUS':([0,1,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,],[9,9,-14,-13,-15,18,-12,9,-17,18,-11,9,9,9,9,9,9,-4,-16,-5,-9,-8,-6,-10,18,-7,]),'UNIT':([0,1,3,4,5,9,10,13,14,15,16,17,18,],[10,10,-14,10,-15,10,10,10,10,10,10,10,10,]),'$end':([2,3,4,5,6,7,8,10,12,19,20,21,22,23,24,25,26,27,],[-1,-14,-13,-15,0,-2,-12,-17,-11,-4,-16,-5,-9,-8,-6,-10,-3,-7,]),}
 
 _lr_action = { }
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'units':([0,1,3,8,9,12,13,14,15,16,17,],[7,7,11,7,19,7,7,7,7,7,7,]),'expr':([0,1,8,12,13,14,15,16,17,],[3,3,3,3,3,3,3,3,3,]),'conversion':([0,],[2,]),'unit-expr':([0,1,8,12,13,14,15,16,17,],[6,10,18,21,22,23,24,25,26,]),'eval-expr':([0,],[5,]),}
+_lr_goto_items = {'units':([0,1,4,9,10,13,14,15,16,17,18,],[8,8,12,8,20,8,8,8,8,8,8,]),'expr':([0,1,9,13,14,15,16,17,18,],[4,4,4,4,4,4,4,4,4,]),'conversion':([0,],[2,]),'unit-expr':([0,1,9,13,14,15,16,17,18,],[7,11,19,22,23,24,25,26,27,]),'eval-expr':([0,],[6,]),}
 
 _lr_goto = { }
 for _k, _v in _lr_goto_items.items():
@@ -26,20 +26,21 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> eval-expr","S'",1,None,None,None),
-  ('eval-expr -> conversion','eval-expr',1,'p_eval_expr','/Users/stephen/Working/conversion/parser.py',60),
-  ('eval-expr -> unit-expr','eval-expr',1,'p_eval_expr','/Users/stephen/Working/conversion/parser.py',61),
-  ('conversion -> unit-expr IN unit-expr','conversion',3,'p_conversion','/Users/stephen/Working/conversion/parser.py',66),
-  ('unit-expr -> MINUS unit-expr','unit-expr',2,'p_expr_unary','/Users/stephen/Working/conversion/parser.py',71),
-  ('unit-expr -> LPAR unit-expr RPAR','unit-expr',3,'p_expr_paren','/Users/stephen/Working/conversion/parser.py',75),
-  ('unit-expr -> unit-expr PLUS unit-expr','unit-expr',3,'p_expr_binop','/Users/stephen/Working/conversion/parser.py',80),
-  ('unit-expr -> unit-expr MINUS unit-expr','unit-expr',3,'p_expr_binop','/Users/stephen/Working/conversion/parser.py',81),
-  ('unit-expr -> unit-expr TIMES unit-expr','unit-expr',3,'p_expr_binop','/Users/stephen/Working/conversion/parser.py',82),
-  ('unit-expr -> unit-expr DIVIDE unit-expr','unit-expr',3,'p_expr_binop','/Users/stephen/Working/conversion/parser.py',83),
-  ('unit-expr -> unit-expr EXP unit-expr','unit-expr',3,'p_expr_binop','/Users/stephen/Working/conversion/parser.py',84),
-  ('unit-expr -> expr units','unit-expr',2,'p_unit_expr','/Users/stephen/Working/conversion/parser.py',101),
-  ('unit-expr -> units','unit-expr',1,'p_unit_expr_one','/Users/stephen/Working/conversion/parser.py',106),
-  ('unit-expr -> expr','unit-expr',1,'p_unit_expr_one','/Users/stephen/Working/conversion/parser.py',107),
-  ('expr -> NUMBER','expr',1,'p_expr_literal','/Users/stephen/Working/conversion/parser.py',112),
-  ('units -> UNIT units','units',2,'p_units_units','/Users/stephen/Working/conversion/parser.py',120),
-  ('units -> UNIT','units',1,'p_units_unit','/Users/stephen/Working/conversion/parser.py',124),
+  ('eval-expr -> conversion','eval-expr',1,'p_eval_expr','/Users/stephen/Working/conversion/parser.py',87),
+  ('eval-expr -> unit-expr','eval-expr',1,'p_eval_expr','/Users/stephen/Working/conversion/parser.py',88),
+  ('conversion -> unit-expr IN unit-expr','conversion',3,'p_conversion','/Users/stephen/Working/conversion/parser.py',93),
+  ('unit-expr -> MINUS unit-expr','unit-expr',2,'p_expr_unary','/Users/stephen/Working/conversion/parser.py',98),
+  ('unit-expr -> LPAR unit-expr RPAR','unit-expr',3,'p_expr_paren','/Users/stephen/Working/conversion/parser.py',102),
+  ('unit-expr -> unit-expr PLUS unit-expr','unit-expr',3,'p_expr_binop','/Users/stephen/Working/conversion/parser.py',107),
+  ('unit-expr -> unit-expr MINUS unit-expr','unit-expr',3,'p_expr_binop','/Users/stephen/Working/conversion/parser.py',108),
+  ('unit-expr -> unit-expr TIMES unit-expr','unit-expr',3,'p_expr_binop','/Users/stephen/Working/conversion/parser.py',109),
+  ('unit-expr -> unit-expr DIVIDE unit-expr','unit-expr',3,'p_expr_binop','/Users/stephen/Working/conversion/parser.py',110),
+  ('unit-expr -> unit-expr EXP unit-expr','unit-expr',3,'p_expr_binop','/Users/stephen/Working/conversion/parser.py',111),
+  ('unit-expr -> expr units','unit-expr',2,'p_unit_expr','/Users/stephen/Working/conversion/parser.py',128),
+  ('unit-expr -> units','unit-expr',1,'p_unit_expr_one','/Users/stephen/Working/conversion/parser.py',133),
+  ('unit-expr -> expr','unit-expr',1,'p_unit_expr_one','/Users/stephen/Working/conversion/parser.py',134),
+  ('expr -> CONSTANT','expr',1,'p_expr_constant','/Users/stephen/Working/conversion/parser.py',145),
+  ('expr -> NUMBER','expr',1,'p_expr_literal','/Users/stephen/Working/conversion/parser.py',150),
+  ('units -> UNIT units','units',2,'p_units_units','/Users/stephen/Working/conversion/parser.py',158),
+  ('units -> UNIT','units',1,'p_units_unit','/Users/stephen/Working/conversion/parser.py',162),
 ]
