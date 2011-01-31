@@ -6,11 +6,29 @@ DECIMALS_OUT = 5
 unit_types = dict()
 unit_graphs = dict()
 
+def _groups(lst):
+    grouped = []
+    
+    while lst:
+        item = lst.pop(0)
+        if not grouped or item == grouped[0]:
+            grouped.append(item)
+        else:
+            yield grouped
+            grouped = [item]
+    
+    if grouped:
+        yield grouped
+    
+    raise StopIteration
+
 class UnitValue(object):
     def __init__(self, value=1, numer=None, denom=None):
         self.value = value
         self.numer = numer or []
         self.denom = denom or []
+        
+        self._simplify()
     
     def __mul__(self, other):
         assert isinstance(other, UnitValue)
@@ -24,21 +42,37 @@ class UnitValue(object):
                          numer=self.numer + other.denom,
                          denom=self.denom + other.numer)
     
+    def _group_like_units(self, unitslist):
+        unitslist = sorted(unitslist)
+        output = []
+        for group in _groups(unitslist):
+            if len(group) == 1:
+                output.append(group[0])
+            else:
+                output.append("%s^%d" % (group[0], len(group)))
+        return output
+    
     def __repr__(self):
+        from math import log10
+        
         out = ""
         rounded_value = round(self.value, DECIMALS_OUT)
-        if (abs(self.value) > (10 ** -DECIMALS_OUT) and 
-            rounded_value == int(rounded_value)):
+        
+        fits_decimals = abs(log10(abs(self.value))) < DECIMALS_OUT
+        
+        if fits_decimals and rounded_value == int(rounded_value):
             out += str(int(self.value))
+        elif fits_decimals:
+            out += ("%." + str(DECIMALS_OUT) + "f") % self.value
         else:
             out += ("%." + str(DECIMALS_OUT) + "e") % self.value
             
         if self.numer:
             if out:
                 out += " "
-            out += "*".join(self.numer)
+            out += "*".join(self._group_like_units(self.numer))
         if self.denom:
-            out += "/" + "*".join(self.denom)
+            out += "/" + "*".join(self._group_like_units(self.denom))
         
         return out
     
@@ -66,6 +100,24 @@ class UnitValue(object):
     
     def __sub__(self, other):
         return self + (- other)
+    
+    def _simplify(self):
+        global unit_types
+        if not unit_types:
+            initialize_converter()
+        
+        for n in list(self.numer):
+            ntyp = unit_types[n]
+            for d in list(self.denom):
+                dtyp = unit_types[d]
+                if ntyp == dtyp:
+                    self.value *= convert_many([n], [d])
+                    self.numer.remove(n)
+                    self.denom.remove(d)
+                    break
+        
+        self.numer.sort()
+        self.denom.sort()
     
     def convert_to(self, goal):
         value = self.value
