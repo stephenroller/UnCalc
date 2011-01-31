@@ -1,6 +1,6 @@
 #!/usr/bin/env
 import ply.lex as lex
-from units import units
+from units import units, constants
 
 def make_unit_re():
     unit_list = []
@@ -24,7 +24,7 @@ tokens = (
 
 t_ignore = ' \n\t'
 
-t_CONSTANT = '(pi|e)'
+t_CONSTANT = '(' + '|'.join(k for k in constants.iterkeys()) + ')'
 
 t_IN = r'in'
 t_NUMBER = r"\d+(\.\d*)?(e([+-]?\d+))?"

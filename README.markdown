@@ -22,7 +22,6 @@ useful tool.
 
   * UnCalc has a very limited list of supported units. See units.py for a 
     complete list.
-  * UnCalc does not know about any constants with units, such as [hbar][hbar].
   * UnCalc cannot handle compound units, such as Newtons or mph.
   * UnCalc has no trigonometry functions, e.g. cos, sin..
   * UnCalc will die ungracefully if given an invalid conversion.

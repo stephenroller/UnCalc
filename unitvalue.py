@@ -26,11 +26,12 @@ class UnitValue(object):
     
     def __repr__(self):
         out = ""
-        value = round(self.value, DECIMALS_OUT)
-        if value == int(value):
+        rounded_value = round(self.value, DECIMALS_OUT)
+        if (abs(self.value) > (10 ** -DECIMALS_OUT) and 
+            rounded_value == int(rounded_value)):
             out += str(int(self.value))
         else:
-            out += ("%." + str(DECIMALS_OUT) + "f") % self.value
+            out += ("%." + str(DECIMALS_OUT) + "e") % self.value
             
         if self.numer:
             if out:
