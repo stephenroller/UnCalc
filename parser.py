@@ -43,7 +43,6 @@ def p_expr_paren(p):
     '''
     p[0] = p[2]
 
-
 def p_unit_expr_paren(p):
     '''unit-expr : LPAR unit-expr RPAR
     '''
@@ -71,13 +70,13 @@ def p_expr_binop(p):
         raise ValueError, "'%s' is not an operator." % op
 
 def p_unit_expr(p):
-    '''unit-expr : expr units
+    '''unit-expr : unit-expr units
     '''
     p[0] = [OpConstants.TIMES, p[1], p[2]]
 
 def p_unit_expr_one(p):
-    '''unit-expr : units
-                 | expr
+    '''unit-expr : expr
+                 | units
     '''
     p[0] = p[1]
 

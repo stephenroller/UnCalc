@@ -1,6 +1,15 @@
 #!/usr/bin/env
 import ply.lex as lex
-from units import make_unit_re
+from units import units
+
+def make_unit_re():
+    unit_list = []
+    for measurement, conversions in units:
+        for base, multiplier, names in conversions:
+            unit_list += names
+    
+    unit_list.sort(key=len, reverse=True)
+    return "(%s)" % ')|('.join(unit_list)
 
 tokens = (
     'IN',

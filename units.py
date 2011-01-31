@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from unitvalue import UnitValue
 
 units = [
     ('distance', [
@@ -22,16 +23,7 @@ units = [
 ]
 
 constants = {
-    'pi': 3.14159265,
-    'e': 2.71828183,
+    'pi': UnitValue(3.14159265),
+    'e': UnitValue(2.71828183),
 }
 
-
-def make_unit_re():
-    unit_list = []
-    for measurement, conversions in units:
-        for base, multiplier, names in conversions:
-            unit_list += names
-    
-    unit_list.sort(key=len, reverse=True)
-    return "(%s)" % ')|('.join(unit_list)
