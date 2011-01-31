@@ -27,8 +27,6 @@ class UnitValue(object):
         self.value = value
         self.numer = numer or []
         self.denom = denom or []
-        
-        self._simplify()
     
     def __mul__(self, other):
         assert isinstance(other, UnitValue)
@@ -52,8 +50,10 @@ class UnitValue(object):
                 output.append("%s^%d" % (group[0], len(group)))
         return output
     
-    def __repr__(self):
+    def __str__(self):
         from math import log10
+        
+        self._simplify()
         
         out = ""
         rounded_value = round(self.value, DECIMALS_OUT)
@@ -107,9 +107,15 @@ class UnitValue(object):
             initialize_converter()
         
         for n in list(self.numer):
-            ntyp = unit_types[n]
+            try:
+                ntyp = unit_types[n]
+            except KeyError:
+                continue
             for d in list(self.denom):
-                dtyp = unit_types[d]
+                try:
+                    dtyp = unit_types[d]
+                except KeyError:
+                    continue
                 if ntyp == dtyp:
                     self.value *= convert_many([n], [d])
                     self.numer.remove(n)
@@ -120,9 +126,12 @@ class UnitValue(object):
         self.denom.sort()
     
     def convert_to(self, goal):
+        self_expanded = expand_compounds(self)
+        goal_expanded = expand_compounds(goal)
+        
         value = self.value
-        value *= convert_many(self.numer, goal.numer)
-        value /= convert_many(self.denom, goal.denom)
+        value *= convert_many(self_expanded.numer, goal_expanded.numer)
+        value /= convert_many(self_expanded.denom, goal_expanded.denom)
         
         return UnitValue(value=value,
                          numer=goal.numer,
@@ -134,6 +143,7 @@ def initialize_converter():
     global unit_types, unit_graphs
     from units import units
     from graph import Graph
+    global compound_units
     
     unit_types = dict(
         (name, measurement)
@@ -155,14 +165,42 @@ def initialize_converter():
 
         unit_graphs[measurement] = Graph(vertices, edges)
 
+
+def expand_compounds(unitval):
+    from units import compound_units
+    
+    expanded = unitval
+    
+    modified = False
+    
+    for n in unitval.numer:
+        if n in compound_units:
+            modified = True
+            before, after = compound_units[n]
+            expanded *= after
+            expanded.numer.remove(n)
+    
+    for d in unitval.denom:
+        if d in compound_units:
+            modified = True
+            before, after = compound_units[d]
+            expanded /= after
+            expanded.denom.remove(d)
+    
+    # are we done completely reducing to base units?
+    if not modified:
+        # yep.
+        return expanded
+    else:
+        # possibly not... better check if we can reduce further
+        return expand_compounds(expanded)
+    
+
 def convert_many(from_units, to_units):
     if not unit_graphs or not unit_types:
         initialize_converter()
     
     assert len(from_units) == len(to_units), "Invalid conversion."
-    # copies so we can mess with them freely
-    from_units = list(from_units)
-    to_units = list(to_units)
 
     value = 1.0
 

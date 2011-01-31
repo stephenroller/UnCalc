@@ -20,9 +20,8 @@ substantial work before it should ever be used seriously.
 UnCalc has several large limitations keeping it from being a seriously
 useful tool.
 
-  * UnCalc has a very limited list of supported units. See units.py for a 
-    complete list.
-  * UnCalc cannot handle compound units, such as Newtons or mph.
+  * UnCalc has a very limited list of supported units and constants. See 
+    units.py for a complete list.
   * UnCalc has no trigonometry functions, e.g. cos, sin..
   * UnCalc will die ungracefully if given an invalid conversion.
   * UnCalc is unaware of plurality, e.g. 1 days and 3 day are both valid 

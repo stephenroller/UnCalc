@@ -25,12 +25,19 @@ units = [
         ('kg', 2.20462262,     ['lb', 'lbs', 'pound', 'pounds']),
         ('kg', 1000,           ['g', 'gram', 'grams']),
         ('kg', 1,              ['kg', 'kilograms', 'kgs', 'kilogram']),
-    ])
+    ]),
 ]
 
 constants = {
     'pi': UnitValue(3.14159265),
     'e': UnitValue(2.71828183),
-    'G': UnitValue(6.67300e-11, ['m', 'm', 'm'], ['kg', 's', 's'])
+    'G': UnitValue(6.67300e-11, ['m', 'm', 'm'], ['kg', 's', 's']),
+    'c': UnitValue(2.99782458e8, ['m'], ['s']),
 }
 
+compound_units = dict([
+    ('N', (UnitValue(1, ['N']), UnitValue(1, ['kg', 'm'], ['s', 's']))),
+    ('mph', (UnitValue(1, ['mph']),   UnitValue(1, ['miles'], ['hour']))),
+    ('J', (UnitValue(1, ['J']), UnitValue(1, ['N', 'm']))),
+    ('hz', (UnitValue(1, ['hz']), UnitValue(1, denom=['s']))),
+])
